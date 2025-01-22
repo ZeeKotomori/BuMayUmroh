@@ -75,4 +75,16 @@ exports.register = async (req, res) => {
     } catch (error) {
         return res.status(500).send({ message : "Internal Server Error" });
     }
-} 
+}
+
+exports.logout = (req, res) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token) {
+        blacklist.push(token);
+        return res.status(200).json({ message: 'Logged out successfully' });
+    }
+
+    return res.status(400).json({ message: 'Token not found' });
+};
